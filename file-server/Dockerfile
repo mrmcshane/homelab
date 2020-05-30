@@ -1,7 +1,5 @@
 FROM alpine
 
-LABEL Andrew Mcshane <andrew@ns1.ovh>
-
 RUN apk --no-cache add \
     samba \
     samba-common-tools

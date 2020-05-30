@@ -1,7 +1,5 @@
 FROM alpine
 
-LABEL Andrew Mcshane <andrew@ns1.ovh>
-
 ENV arch=amd64
 ENV ver=v1.52.0
 
