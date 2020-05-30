@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  backup-server:
+    build:
+      context: ./rclone/
+      args:
+        - arch=amd64
+        - ver=v1.52.0
+    user: root
+    volumes:
+      - ./config/:/root/config/
+    command: ["--config","/root/config/rclone.conf","ls","gdrive:tmp"]
+  download-server:
+    build:
+      context: ./rclone/
+      args:
+        - arch=amd64
+        - ver=v1.52.0
+    user: root
+    volumes:
+      - ./config/:/root/config/
+      - /data/:/data/
+    command: ["--config","/root/config/rclone.conf","sync","gdrive:Video/","/data/video/","-P"]
+  file-server:
+    build:
+      context: ./file-server/
+    stdin_open: true
+    tty: true
+    ports:
+      - 445:445
+    volumes:
+      - /data:/data
+  pihole:
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    environment:
+      TZ: 'Europe/London'
+      WEBPASSWORD: 'password123'
+    # Volumes store your data between container upgrades
+    volumes:
+       - './etc-pihole/:/etc/pihole/'
+       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    # Recommended but not required (DHCP needs NET_ADMIN)
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
