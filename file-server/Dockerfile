@@ -1,8 +1,6 @@
 FROM alpine
 
-RUN apk --no-cache add \
-    samba \
-    samba-common-tools
+RUN apk --no-cache add samba samba-common-tools
 RUN mkdir -p /data
 
 VOLUME ["/data"]
