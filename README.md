@@ -8,7 +8,7 @@ Go to the `documentation` directory and use it to pre-configure the server
 
 ### Rclone
 
-Get a configuration file for rclone that looks like this and pit it in `config/`:
+Get a configuration file for rclone that looks like this and put it in `config/`:
 ```
 [gdrive]
 type = drive
